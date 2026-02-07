@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💖</title>
+
+<style>
+:root {
+  --pink:#ff2f6d;
+  --bg1:#ff6fae;
+  --bg2:#ff9ad5;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial, sans-serif;
+  overflow:hidden;
+}
+
+.card{
+  background:#fff;
+  padding:42px;
+  border-radius:24px;
+  width:92%;
+  max-width:380px;
+  text-align:center;
+  box-shadow:0 30px 60px rgba(0,0,0,.25);
+  animation:pop 1s ease;
+}
+
+h1{
+  color:var(--pink);
+  margin-bottom:10px;
+}
+
+p{
+  font-size:18px;
+  color:#444;
+  min-height:90px;
+  line-height:1.4;
+}
+
+input{
+  width:85%;
+  padding:12px;
+  border-radius:20px;
+  border:1px solid #ccc;
+  font-size:16px;
+  text-align:center;
+  margin-top:10px;
+}
+
+.buttons{
+  margin-top:22px;
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+button{
+  padding:12px 28px;
+  border:none;
+  border-radius:25px;
+  background:var(--pink);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+  transition:transform .2s, box-shadow .2s;
+  box-shadow:0 8px 20px rgba(255,47,109,.5);
+}
+
+button:hover{
+  transform:scale(1.07);
+  box-shadow:0 12px 30px rgba(255,47,109,.7);
+}
+
+.no{
+  background:#aaa;
+  box-shadow:none;
+}
+
+.fade{opacity:.3}
+
+.heart, .confetti{
+  position:absolute;
+  pointer-events:none;
+}
+
+@keyframes floatUp{
+  from{transform:translateY(0) scale(1);opacity:1}
+  to{transform:translateY(-900px) scale(2);opacity:0}
+}
+
+@keyframes pop{
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/02/14/audio_8c4e8f81c5.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <h1 id="title">Hai 💕</h1>
+  <p id="text"></p>
+
+  <input id="nameInput" placeholder="Nama kamu..." />
+
+  <div class="buttons">
+    <button id="mainBtn" onclick="next()">Lanjut</button>
+    <button id="noBtn" class="no" style="display:none" onmouseover="run()">No 😭</button>
+  </div>
+</div>
+
+<script>
+const textEl = document.getElementById("text");
+const titleEl = document.getElementById("title");
+const music = document.getElementById("music");
+let step = 0;
+let name = "";
+
+const lines = [
+  "Sebelum lanjut, aku pengen tau nama kamu dulu.",
+  () => `Hai ${name}, aku bikin ini pelan-pelan sambil mikirin kamu.`,
+  () => `Setiap aku lihat ${name}, rasanya tenang dan nyaman.`,
+  "Aku nggak jago kata-kata, tapi perasaan ini jujur.",
+  "Will you be my girlfriend?"
+];
+
+function type(text){
+  textEl.innerHTML="";
+  let i=0;
+  const t=setInterval(()=>{
+    textEl.innerHTML+=text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(t);
+  },30);
+}
+
+function hearts(n=18){
+  for(let i=0;i<n;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*innerWidth+"px";
+    h.style.bottom="-20px";
+    h.style.fontSize=18+Math.random()*30+"px";
+    h.style.animation="floatUp 5s ease-out forwards";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+  }
+}
+
+function confetti(n=80){
+  for(let i=0;i<n;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.width="8px";
+    c.style.height="8px";
+    c.style.borderRadius="50%";
+    c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    c.style.left=Math.random()*innerWidth+"px";
+    c.style.top=Math.random()*innerHeight+"px";
+    c.style.animation="floatUp 6s ease-out forwards";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),6000);
+  }
+}
+
+function next(){
+  music.play().catch(()=>{});
+  step++;
+
+  if(step===1){
+    name=document.getElementById("nameInput").value||"Kamu";
+    document.getElementById("nameInput").style.display="none";
+    type(lines[1]());
+    hearts();
+  }
+  else if(step===2){
+    type(lines[2]());
+    hearts(22);
+  }
+  else if(step===3){
+    type(lines[3]);
+    hearts(28);
+  }
+  else if(step===4){
+    titleEl.innerText="One last thing 💖";
+    type(lines[4]);
+    document.getElementById("mainBtn").innerText="Yes ❤️";
+    document.getElementById("mainBtn").onclick=yes;
+    document.getElementById("noBtn").style.display="inline-block";
+    hearts(35);
+  }
+  else{
+    type(lines[0]);
+  }
+}
+
+function run(){
+  const b=document.getElementById("noBtn");
+  b.style.position="absolute";
+  b.style.left=Math.random()*(innerWidth-100)+"px";
+  b.style.top=Math.random()*(innerHeight-50)+"px";
+}
+
+function yes(){
+  titleEl.innerText="💘";
+  type("MAKASIH BANYAKK 💖");
+  document.querySelector(".buttons").style.display="none";
+  hearts(60);
+  confetti(120);
+}
+</script>
+
+</body>
+</html>
