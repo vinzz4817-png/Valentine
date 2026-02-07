@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff6fae,#ff9ad5);
+  font-family:Arial,sans-serif;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  width:90%;
+  max-width:350px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+
+h1{color:#ff2f6d}
+
+p{
+  font-size:18px;
+  min-height:80px;
+  color:#444;
+}
+
+input{
+  padding:10px;
+  width:80%;
+  border-radius:20px;
+  border:1px solid #ccc;
+  text-align:center;
+  font-size:16px;
+}
+
+button{
+  margin-top:15px;
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:#ff2f6d;
+  color:white;
+  font-size:16px;
+}
+
+button:active{
+  transform:scale(.95);
+}
+
+#noBtn{
+  background:#aaa;
+  position:absolute;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1 id="title">Hai 💕</h1>
+  <p id="text">Sebelum lanjut, nama kamu siapa?</p>
+
+  <input id="nameInput" placeholder="Nama kamu">
+
+  <div>
+    <button id="mainBtn" onclick="next()">Lanjut</button>
+    <button id="noBtn" onclick="moveNo()">No 😭</button>
+  </div>
+</div>
+
+<script>
+let step = 0;
+let name = "";
+
+function next(){
+  step++;
+
+  if(step === 1){
+    name = document.getElementById("nameInput").value || "Kamu";
+    document.getElementById("nameInput").style.display="none";
+    document.getElementById("text").innerText =
+      "Hai " + name + ", aku bikin ini khusus buat kamu.";
+  }
+
+  else if(step === 2){
+    document.getElementById("text").innerText =
+      "Setiap aku lihat kamu, rasanya tenang.";
+  }
+
+  else if(step === 3){
+    document.getElementById("text").innerText =
+      "Aku jujur soal perasaan ini.";
+  }
+
+  else if(step === 4){
+    document.getElementById("title").innerText = "One last thing 💖";
+    document.getElementById("text").innerText =
+      "Will you be my girlfriend?";
+    document.getElementById("mainBtn").innerText = "Yes ❤️";
+    document.getElementById("mainBtn").onclick = yes;
+    document.getElementById("noBtn").style.display="inline-block";
+  }
+}
+
+function moveNo(){
+  const btn = document.getElementById("noBtn");
+  btn.style.left = Math.random()*(window.innerWidth-80)+"px";
+  btn.style.top = Math.random()*(window.innerHeight-40)+"px";
+}
+
+function yes(){
+  document.getElementById("title").innerText="💘";
+  document.getElementById("text").innerText="MAKASIH BANYAKK 💖";
+  document.getElementById("mainBtn").style.display="none";
+  document.getElementById("noBtn").style.display="none";
+}
+</script>
+
+</body>
+</html>
